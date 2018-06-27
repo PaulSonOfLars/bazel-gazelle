@@ -24,7 +24,7 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/internal/config"
 	"github.com/bazelbuild/bazel-gazelle/internal/label"
 	"github.com/bazelbuild/bazel-gazelle/internal/packages"
-	"github.com/bazelbuild/bazel-gazelle/internal/pathtools"
+	//"github.com/bazelbuild/bazel-gazelle/internal/pathtools"
 	bf "github.com/bazelbuild/buildtools/build"
 )
 
@@ -241,13 +241,14 @@ func (g *Generator) commonAttrs(pkgRel, name, visibility string, target packages
 
 func (g *Generator) importAttrs(pkg *packages.Package) []KeyValue {
 	attrs := []KeyValue{{"importpath", pkg.ImportPath}}
-	if g.c.GoImportMapPrefix != "" {
-		fromPrefixRel := pathtools.TrimPrefix(pkg.Rel, g.c.GoImportMapPrefixRel)
-		importMap := path.Join(g.c.GoImportMapPrefix, fromPrefixRel)
-		if importMap != pkg.ImportPath {
-			attrs = append(attrs, KeyValue{"importmap", importMap})
-		}
-	}
+	// NOTE: disable importmaps because the improbable prefix_root addition messes it up.
+	//if g.c.GoImportMapPrefix != "" {
+	//	fromPrefixRel := pathtools.TrimPrefix(pkg.Rel, g.c.GoImportMapPrefix)
+	//	importMap := path.Join(g.c.GoImportMapPrefix, fromPrefixRel)
+	//	if importMap != pkg.ImportPath {
+	//		attrs = append(attrs, KeyValue{"importmap", importMap})
+	//	}
+	//}
 	return attrs
 }
 
